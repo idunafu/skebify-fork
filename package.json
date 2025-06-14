@@ -10,20 +10,19 @@
     "package": "plasmo package"
   },
   "dependencies": {
-    "dompurify": "^2.4.1",
-    "plasmo": "0.86.3",
+    "dompurify": "^3.2.6",
+    "plasmo": "0.90.5",
     "react": "18.2.0",
     "react-dom": "18.2.0"
   },
   "devDependencies": {
-    "@plasmohq/prettier-plugin-sort-imports": "3.6.0",
-    "@types/chrome": "0.0.202",
-    "@types/dompurify": "^2.4.0",
-    "@types/firefox-webext-browser": "^94.0.1",
-    "@types/node": "18.11.9",
+    "@plasmohq/prettier-plugin-sort-imports": "^4.0.1",
+    "@types/chrome": "^0.0.326",
+    "@types/firefox-webext-browser": "^120.0.4",
+    "@types/node": "^24.0.1",
     "@types/react": "18.0.25",
     "@types/react-dom": "18.0.9",
-    "prettier": "2.7.1",
+    "prettier": "^3.5.3",
     "typescript": "4.9.3"
   },
   "manifest": {
@@ -34,5 +33,9 @@
     "host_permissions": [
       "https://skeb.jp/api/*"
     ]
+  },
+  "volta": {
+    "node": "20.19.2",
+    "yarn": "1.22.22"
   }
 }

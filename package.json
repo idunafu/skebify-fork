@@ -1,9 +1,9 @@
 {
   "name": "skebify",
   "displayName": "Skebify",
-  "version": "1.1.0",
+  "version": "1.1.0-fork",
   "description": "A more modern version of the Skeb Button extension.",
-  "author": "Mark Ignacio",
+  "author": "Mark Ignacio, idunafu",
   "scripts": {
     "dev": "plasmo dev",
     "build": "plasmo build",
@@ -27,12 +27,15 @@
   },
   "manifest": {
     "default_locale": "en",
-    "permissions": [
-      "scripting"
-    ],
+    "permissions": [],
     "host_permissions": [
       "https://skeb.jp/api/*"
-    ]
+    ],
+    "applications": {
+      "gecko": {
+        "id": "skebify@idnf.dev"
+      }
+    }
   },
   "volta": {
     "node": "20.19.2",

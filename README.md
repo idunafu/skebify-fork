@@ -5,7 +5,7 @@
 ## Building
 
 ```
-$ yarn package --target=firefox-mv2
+$ yarn build --no-minify --no-hoist --zip --target=firefox-mv2
 $ yarn package --target=chrome-mv3
 ```
 

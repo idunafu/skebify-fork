@@ -11,16 +11,11 @@
   },
   "dependencies": {
     "dompurify": "^3.2.6",
-    "plasmo": "0.90.5",
-    "react": "18.2.0",
-    "react-dom": "18.2.0"
+    "plasmo": "0.90.5"
   },
   "devDependencies": {
     "@types/chrome": "^0.0.326",
     "@types/firefox-webext-browser": "^120.0.4",
-    "@types/node": "^24.0.1",
-    "@types/react": "18.0.25",
-    "@types/react-dom": "18.0.9",
     "prettier": "^3.5.3",
     "typescript": "4.9.3"
   },

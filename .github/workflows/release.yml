@@ -1,0 +1,59 @@
+name: Build and Release Extension
+
+on:
+    push:
+        tags:
+            - "v*"
+    workflow_dispatch:
+
+permissions:
+    contents: write
+
+jobs:
+    build-and-release:
+        name: Build and publish artifacts
+        runs-on: ubuntu-latest
+
+        steps:
+            - name: Checkout repository
+              uses: actions/checkout@v4
+              with:
+                  fetch-depth: 0
+
+            - name: Set up Node.js
+              uses: actions/setup-node@v4
+              with:
+                  node-version: "20.19.5"
+                  cache: yarn
+
+            - name: Install dependencies
+              run: yarn install --frozen-lockfile
+
+            - name: Build Firefox package
+              run: yarn build --no-minify --no-hoist --zip --target=firefox-mv2
+
+            - name: Build Chrome package
+              run: yarn package --target=chrome-mv3
+
+            - name: Verify build artifacts
+              run: |
+                  test -f build/firefox-mv2-prod.zip
+                  test -f build/chrome-mv3-prod.zip
+
+            - name: Upload workflow artifacts
+              uses: actions/upload-artifact@v4
+              with:
+                  name: skebify-extension-packages
+                  path: |
+                      build/firefox-mv2-prod.zip
+                      build/chrome-mv3-prod.zip
+
+            - name: Create GitHub Release
+              uses: softprops/action-gh-release@v2
+              with:
+                  name: ${{ github.ref_name }}
+                  files: |
+                      build/firefox-mv2-prod.zip
+                      build/chrome-mv3-prod.zip
+              env:
+                  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

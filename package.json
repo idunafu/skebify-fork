@@ -14,7 +14,7 @@
     "plasmo": "0.90.5"
   },
   "devDependencies": {
-    "@types/chrome": "^0.0.326",
+    "@types/chrome": "^0.1.29",
     "@types/firefox-webext-browser": "^120.0.4",
     "prettier": "^3.5.3",
     "typescript": "4.9.3"

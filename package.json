@@ -16,7 +16,7 @@
   "devDependencies": {
     "@types/chrome": "^0.1.29",
     "@types/firefox-webext-browser": "^143.0.0",
-    "prettier": "^3.5.3",
+    "prettier": "^3.8.1",
     "typescript": "5.9.3"
   },
   "manifest": {

@@ -5,34 +5,26 @@
   "description": "A more modern version of the Skeb Button extension.",
   "author": "Mark Ignacio, idunafu",
   "scripts": {
-    "dev": "plasmo dev",
-    "build": "plasmo build",
-    "package": "plasmo package"
+    "dev": "wxt",
+    "dev:firefox": "wxt -b firefox",
+    "build": "wxt build",
+    "build:firefox": "wxt build -b firefox",
+    "zip": "wxt zip",
+    "zip:firefox": "wxt zip -b firefox",
+    "typecheck": "tsc --noEmit",
+    "postinstall": "wxt prepare"
   },
   "dependencies": {
-    "dompurify": "^3.3.2",
-    "plasmo": "0.90.5"
+    "dompurify": "^3.3.2"
   },
   "devDependencies": {
-    "@types/chrome": "^0.1.29",
-    "@types/firefox-webext-browser": "^143.0.0",
+    "@wxt-dev/auto-icons": "1.1.1",
     "prettier": "^3.5.3",
-    "typescript": "5.9.3"
-  },
-  "manifest": {
-    "default_locale": "en",
-    "permissions": [],
-    "host_permissions": [
-      "https://skeb.jp/api/*"
-    ],
-    "applications": {
-      "gecko": {
-        "id": "skebify@idnf.dev"
-      }
-    }
+    "typescript": "5.9.3",
+    "wxt": "0.20.27"
   },
   "volta": {
-    "node": "20.19.5",
+    "node": "22.23.1",
     "yarn": "1.22.22"
   }
 }

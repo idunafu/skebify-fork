@@ -32,8 +32,9 @@ out/
 build/
 dist/
 
-# plasmo - https://www.plasmo.com
+# Extension framework generated state
 .plasmo
+.wxt
 
 # bpp - http://bpp.browser.market/
 keys.json

@@ -25,7 +25,11 @@ export default defineConfig({
       browser === "firefox"
         ? {
             gecko: {
-              id: "skebify@idnf.dev"
+              id: "skebify@idnf.dev",
+              strict_min_version: "140.0",
+              data_collection_permissions: {
+                required: ["browsingActivity", "websiteContent"]
+              }
             }
           }
         : undefined

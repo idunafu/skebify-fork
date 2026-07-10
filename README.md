@@ -2,6 +2,27 @@
 
 **Skebify** is a Chrome/Chromium and Firefox extension derived from [skeb-inc/skeb-button](https://github.com/skeb-inc/skeb-button), but updated to use more modern/safer browser extension practices.
 
+## Development setup
+
+This project uses Node.js 24.18.0 and Yarn 4.17.1. Volta selects the pinned Node.js
+version from `package.json`, while Corepack selects the pinned Yarn version.
+
+When using Volta, install Corepack and replace Volta's Yarn shim with Corepack's
+shim. In PowerShell, run:
+
+```powershell
+volta install node@24.18.0
+npm install --global corepack@0.35.0
+$voltaHome = if ($env:VOLTA_HOME) { $env:VOLTA_HOME } else { Join-Path $env:LOCALAPPDATA "Volta" }
+corepack enable --install-directory "$voltaHome\bin"
+yarn --version
+yarn install --immutable
+```
+
+On macOS or Linux with Volta, use
+`corepack enable --install-directory "${VOLTA_HOME:-$HOME/.volta}/bin"` instead.
+Without Volta, run `corepack enable` after installing Corepack.
+
 ## Building
 
 ```bash
@@ -13,6 +34,13 @@ The newly built extension files should be available at `build/firefox-mv2-prod.z
 
 For unpacked development builds, use `yarn build:firefox` and `yarn build`.
 WXT also creates a source archive when packaging Firefox for review by Mozilla.
+
+## Data transmission
+
+To look up the Skeb account associated with the X/Twitter profile currently
+being viewed, the extension sends that profile's Twitter user ID to
+`https://skeb.jp/api/users/exists`. The extension does not transmit analytics,
+telemetry, or unrelated browsing data, and does not persist the lookup data.
 
 ## Releasing
 

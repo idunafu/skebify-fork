@@ -1,14 +1,8 @@
 import DOMPurify from "dompurify"
-import type { PlasmoCSConfig } from "plasmo"
+import { defineContentScript } from "#imports"
+import { browser } from "wxt/browser"
 
-import type { SkebUserResponse } from "~lib"
-
-export const config: PlasmoCSConfig = {
-  matches: [
-    "*://*.twitter.com/*",
-    "*://*.x.com/*"
-  ]
-}
+import type { SkebUserResponse, TwitterMessage } from "~/lib"
 
 async function upsertButton(data: SkebUserResponse) {
   // https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/Safely_inserting_external_content_into_a_page#html_sanitization
@@ -16,6 +10,10 @@ async function upsertButton(data: SkebUserResponse) {
   const headerItems = document.querySelector(
     "[data-testid='UserProfileHeader_Items']"
   )
+  if (!headerItems) {
+    return
+  }
+
   // remove existing skebify element
   const existing = headerItems.querySelector(".skeb")
   if (existing !== null) {
@@ -39,15 +37,18 @@ function buildSkebLink(name: string, descriptions: string[]) {
 
 function buildDescription(data: SkebUserResponse): string[] {
   const descriptions: string[] = []
-  if (data.acceptable) {
+  if (data.acceptable && data.default_amount !== null) {
     descriptions.push(
-      chrome.i18n.getMessage("acceptable", data.default_amount.toLocaleString())
+      browser.i18n.getMessage(
+        "acceptable",
+        data.default_amount.toLocaleString()
+      )
     )
   }
 
   if (data.agreed_creator_guidelines && data.received_works_count > 0) {
     descriptions.push(
-      chrome.i18n.getMessage(
+      browser.i18n.getMessage(
         "request",
         data.received_works_count.toLocaleString()
       )
@@ -57,37 +58,72 @@ function buildDescription(data: SkebUserResponse): string[] {
   if (!descriptions.length) {
     if (data.sent_public_works_count > 0) {
       descriptions.push(
-        chrome.i18n.getMessage(
+        browser.i18n.getMessage(
           "sent_public_works",
           data.sent_public_works_count.toLocaleString()
         )
       )
     } else {
-      descriptions.push(chrome.i18n.getMessage("registered"))
+      descriptions.push(browser.i18n.getMessage("registered"))
     }
   }
   return descriptions
 }
 
-// we're looking for "head > script[type='application/ld+json']" that contains the Twitter UID
-let observer = new MutationObserver(async (mutations) => {
-  for (const m of mutations) {
-    for (const node of m.addedNodes) {
-      if (
-        node.nodeType === Node.ELEMENT_NODE &&
-        node.nodeName.toLowerCase() === "script"
-      ) {
-        const scriptNode = node as HTMLScriptElement
-        if (scriptNode.getAttribute("type") === "application/ld+json") {
-          const data = JSON.parse(scriptNode.innerText)
-          const r = await chrome.runtime.sendMessage({
-            id: data.mainEntity.identifier
-          })
-          await upsertButton(r)
-          break
+export default defineContentScript({
+  matches: ["*://*.twitter.com/*", "*://*.x.com/*"],
+  main() {
+    const head = document.head
+    if (!head) {
+      return
+    }
+
+    let lastRequestedUid: string | undefined
+
+    // We're looking for a JSON-LD script containing the Twitter UID.
+    const observer = new MutationObserver(async (mutations) => {
+      for (const mutation of mutations) {
+        for (const node of mutation.addedNodes) {
+          if (
+            node.nodeType === Node.ELEMENT_NODE &&
+            node.nodeName.toLowerCase() === "script"
+          ) {
+            const scriptNode = node as HTMLScriptElement
+            if (scriptNode.getAttribute("type") === "application/ld+json") {
+              let data: unknown
+              try {
+                data = JSON.parse(scriptNode.innerText)
+              } catch {
+                continue
+              }
+
+              const identifier = (
+                data as { mainEntity?: { identifier?: unknown } }
+              ).mainEntity?.identifier
+              if (
+                typeof identifier !== "string" ||
+                identifier.length === 0 ||
+                identifier === lastRequestedUid
+              ) {
+                continue
+              }
+
+              lastRequestedUid = identifier
+              const message: TwitterMessage = {
+                id: identifier
+              }
+              const response = (await browser.runtime.sendMessage(
+                message
+              )) as SkebUserResponse | null
+              if (response) {
+                await upsertButton(response)
+              }
+              break
+            }
+          }
         }
       }
-    }
+    })
+    observer.observe(head, { childList: true })
   }
 })
-observer.observe(document.querySelector("head"), { childList: true })

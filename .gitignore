@@ -3,8 +3,13 @@
 
 # dependencies
 /node_modules
-/.pnp
-.pnp.js
+.pnp.*
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/sdks
+!.yarn/versions
 
 # testing
 /coverage
@@ -32,8 +37,9 @@ out/
 build/
 dist/
 
-# plasmo - https://www.plasmo.com
+# Extension framework generated state
 .plasmo
+.wxt
 
 # bpp - http://bpp.browser.market/
 keys.json

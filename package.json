@@ -5,34 +5,40 @@
   "description": "A more modern version of the Skeb Button extension.",
   "author": "Mark Ignacio, idunafu",
   "scripts": {
-    "dev": "plasmo dev",
-    "build": "plasmo build",
-    "package": "plasmo package"
+    "dev": "wxt",
+    "dev:firefox": "wxt -b firefox",
+    "build": "wxt build",
+    "build:firefox": "wxt build -b firefox",
+    "zip": "wxt zip",
+    "zip:firefox": "wxt zip -b firefox",
+    "typecheck": "tsc --noEmit",
+    "postinstall": "wxt prepare"
   },
   "dependencies": {
-    "dompurify": "^3.3.2",
-    "plasmo": "0.90.5"
+    "dompurify": "^3.4.11"
   },
   "devDependencies": {
-    "@types/chrome": "^0.1.29",
-    "@types/firefox-webext-browser": "^143.0.0",
-    "prettier": "^3.5.3",
-    "typescript": "5.9.3"
+    "@wxt-dev/auto-icons": "1.1.1",
+    "prettier": "^3.9.5",
+    "typescript": "6.0.2",
+    "wxt": "0.20.27"
   },
-  "manifest": {
-    "default_locale": "en",
-    "permissions": [],
-    "host_permissions": [
-      "https://skeb.jp/api/*"
-    ],
-    "applications": {
-      "gecko": {
-        "id": "skebify@idnf.dev"
-      }
+  "dependenciesMeta": {
+    "esbuild": {
+      "built": true
+    },
+    "sharp": {
+      "built": true
+    },
+    "spawn-sync": {
+      "built": false
     }
   },
+  "engines": {
+    "node": ">=24.18.0 <25"
+  },
+  "packageManager": "yarn@4.17.1",
   "volta": {
-    "node": "20.19.5",
-    "yarn": "1.22.22"
+    "node": "24.18.0"
   }
 }

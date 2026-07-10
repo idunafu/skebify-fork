@@ -10,7 +10,7 @@ export interface SkebUserResponse {
   sent_public_works_count: number
   agreed_creator_guidelines: boolean
   genre: string
-  default_amount: any // null | something
+  default_amount: number | null
   banned: boolean
   skills: {
     genre: string

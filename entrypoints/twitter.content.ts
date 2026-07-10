@@ -37,7 +37,7 @@ function buildSkebLink(name: string, descriptions: string[]) {
 
 function buildDescription(data: SkebUserResponse): string[] {
   const descriptions: string[] = []
-  if (data.acceptable) {
+  if (data.acceptable && data.default_amount !== null) {
     descriptions.push(
       browser.i18n.getMessage(
         "acceptable",
@@ -78,6 +78,8 @@ export default defineContentScript({
       return
     }
 
+    let lastRequestedUid: string | undefined
+
     // We're looking for a JSON-LD script containing the Twitter UID.
     const observer = new MutationObserver(async (mutations) => {
       for (const mutation of mutations) {
@@ -88,9 +90,27 @@ export default defineContentScript({
           ) {
             const scriptNode = node as HTMLScriptElement
             if (scriptNode.getAttribute("type") === "application/ld+json") {
-              const data = JSON.parse(scriptNode.innerText)
+              let data: unknown
+              try {
+                data = JSON.parse(scriptNode.innerText)
+              } catch {
+                continue
+              }
+
+              const identifier = (
+                data as { mainEntity?: { identifier?: unknown } }
+              ).mainEntity?.identifier
+              if (
+                typeof identifier !== "string" ||
+                identifier.length === 0 ||
+                identifier === lastRequestedUid
+              ) {
+                continue
+              }
+
+              lastRequestedUid = identifier
               const message: TwitterMessage = {
-                id: data.mainEntity.identifier
+                id: identifier
               }
               const response = (await browser.runtime.sendMessage(
                 message

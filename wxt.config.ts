@@ -13,10 +13,10 @@ export default defineConfig({
     author: browser === "firefox" ? "Mark Ignacio, idunafu" : "Mark Ignacio",
     action: {
       default_icon: {
-        16: "/icons/16.png",
-        32: "/icons/32.png",
-        48: "/icons/48.png",
-        128: "/icons/128.png"
+        16: "icons/16.png",
+        32: "icons/32.png",
+        48: "icons/48.png",
+        128: "icons/128.png"
       }
     },
     default_locale: "en",

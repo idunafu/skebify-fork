@@ -19,7 +19,7 @@
   },
   "devDependencies": {
     "@wxt-dev/auto-icons": "1.1.1",
-    "prettier": "^3.9.5",
+    "prettier": "^3.9.6",
     "typescript": "6.0.2",
     "wxt": "0.21.3"
   },

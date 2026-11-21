@@ -1141,12 +1141,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"prettier@npm:^3.9.5":
-  version: 3.9.5
-  resolution: "prettier@npm:3.9.5"
+"prettier@npm:^3.10.1":
+  version: 3.10.1
+  resolution: "prettier@npm:3.10.1"
   bin:
     prettier: bin/prettier.cjs
-  checksum: 10c0/0349dd9e6d8010965de6f69e6b6ee2484b8caf78c66675afced6c75ad60ff24c3a2a4f41153fb8adeaee4d8f539641b48cebc71d283cec4d146e9962126c5ceb
+  checksum: 10c0/e8c03ea575a30e15afa75a3700e94609050502980d7c906374aea4cf623eef4dce0816100126207e675cc1ed54b7dfce60f02dbee8d61ec27dc69ce5df6c3723
   languageName: node
   linkType: hard
 
@@ -1306,7 +1306,7 @@ __metadata:
   dependencies:
     "@wxt-dev/auto-icons": "npm:1.1.2"
     dompurify: "npm:^3.4.17"
-    prettier: "npm:^3.9.5"
+    prettier: "npm:^3.10.1"
     typescript: "npm:6.0.2"
     wxt: "npm:0.21.4"
   dependenciesMeta:
